@@ -1,0 +1,469 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Eternity | Library Management System</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script src="./app.js" defer></script>
+</head>
+<body>
+
+<header class="header">
+  <div class="nav-wrap">
+    <a class="brand" href="#home">
+      <span class="brand-icon">E</span>
+      <span class="brand-name">
+        <strong>Eternity</strong>
+        <small>LIBRARY MANAGEMENT SYSTEM</small>
+      </span>
+    </a>
+
+    <button id="menuBtn" class="mobile-menu" type="button"
+            aria-label="Toggle navigation"
+            aria-expanded="false">☰</button>
+
+    <nav id="navigation" class="navigation"
+         aria-label="Main navigation">
+      <button class="nav-link active" type="button"
+              data-page="home">Home</button>
+      <button class="nav-link" type="button"
+              data-page="search">Search Books</button>
+      <button class="nav-link" type="button"
+              data-page="validate">Validate ID</button>
+      <button class="nav-link" type="button"
+              data-page="borrow">Borrow</button>
+      <button class="nav-link" type="button"
+              data-page="return">Return</button>
+      <button class="nav-link" type="button"
+              data-page="receipt">Receipt</button>
+    </nav>
+
+    <button class="login-nav" type="button" data-page="login">
+      Login / Sign Up
+    </button>
+  </div>
+</header>
+
+<main class="main-container">
+
+  <!-- HOME -->
+  <section id="page-home" class="page active">
+    <div class="hero">
+      <div class="hero-content">
+        <span class="eyebrow">
+          <span class="small-dot"></span>
+          ETERNITY LIBRARY
+        </span>
+
+        <h1>Your library,<br><em>made simple.</em></h1>
+
+        <p>
+          Search the library catalogue, check book availability,
+          borrow books and manage returns in one place.
+        </p>
+
+        <div class="hero-actions">
+          <button class="btn btn-green" type="button"
+                  data-page="search">Browse Books →</button>
+          <button class="btn btn-outline" type="button"
+                  data-page="login">Member Login</button>
+        </div>
+      </div>
+
+      <div class="hero-art" aria-hidden="true">
+        <div class="art-circle"></div>
+        <div class="art-leaf leaf-one"></div>
+        <div class="art-leaf leaf-two"></div>
+        <div class="art-leaf leaf-three"></div>
+
+        <div class="book-stack">
+          <div class="book book-top"></div>
+          <div class="book book-middle"></div>
+          <div class="book book-bottom"></div>
+        </div>
+
+        <span class="art-caption">READ • LEARN • GROW</span>
+      </div>
+    </div>
+
+    <div class="section-heading">
+      <span class="eyebrow">LIBRARY SERVICES</span>
+      <h2>What would you like to do?</h2>
+    </div>
+
+    <div class="services">
+      <button class="service" type="button" data-page="search">
+        <span class="service-number">01</span>
+        <span class="service-icon">⌕</span>
+        <strong>Search Books</strong>
+        <p>Find books by title, author or ISBN.</p>
+        <span class="service-arrow">↗</span>
+      </button>
+
+      <button class="service" type="button" data-page="validate">
+        <span class="service-number">02</span>
+        <span class="service-icon">✓</span>
+        <strong>Validate Book ID</strong>
+        <p>Check Book ID format and availability.</p>
+        <span class="service-arrow">↗</span>
+      </button>
+
+      <button class="service" type="button" data-page="borrow">
+        <span class="service-number">03</span>
+        <span class="service-icon">＋</span>
+        <strong>Borrow Book</strong>
+        <p>Submit a book borrowing request.</p>
+        <span class="service-arrow">↗</span>
+      </button>
+
+      <button class="service" type="button" data-page="return">
+        <span class="service-number">04</span>
+        <span class="service-icon">↩</span>
+        <strong>Return Book</strong>
+        <p>Record returns and review late fees.</p>
+        <span class="service-arrow">↗</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- SEARCH BOOKS -->
+  <section id="page-search" class="page">
+    <div class="page-title">
+      <span class="eyebrow">LIBRARY CATALOGUE</span>
+      <h1>Search Books</h1>
+      <p>Find books by title, author, ISBN or Book ID.</p>
+    </div>
+
+    <form id="searchForm" class="panel search-panel">
+      <div class="field search-category">
+        <label for="searchType">Search By</label>
+        <select id="searchType">
+          <option value="title">Book Title</option>
+          <option value="author">Author</option>
+          <option value="isbn">ISBN</option>
+          <option value="bookId">Book ID</option>
+        </select>
+      </div>
+
+      <div class="field search-input">
+        <label for="searchTerm">Search Term</label>
+        <input id="searchTerm" type="text"
+               maxlength="100" autocomplete="off"
+               placeholder="Leave empty to show all available books">
+        <small>Leave empty to browse all available books.</small>
+      </div>
+
+      <button class="btn btn-green search-submit"
+              type="submit">Search</button>
+    </form>
+
+    <div class="result-heading">
+      <h2 id="resultsTitle">Available Books</h2>
+      <span id="resultCount">No search yet</span>
+    </div>
+
+    <div id="searchResults" class="book-results"
+         aria-live="polite">
+      <div class="empty-state">
+        <span class="empty-icon">⌕</span>
+        <p>Open the catalogue to browse available books.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- VALIDATE BOOK ID -->
+  <section id="page-validate" class="page">
+    <div class="page-title">
+      <span class="eyebrow">BOOK VERIFICATION</span>
+      <h1>Validate Book ID</h1>
+      <p>Check whether a Book ID is valid and available.</p>
+    </div>
+
+    <div class="content-columns">
+      <form id="validateForm" class="panel form-panel">
+        <h2>Book Information</h2>
+
+        <div class="field">
+          <label for="validateId">Book ID</label>
+          <input id="validateId" type="text" maxlength="200"
+                 required placeholder="Enter Book ID">
+          <small>Example: BK000000000000000001</small>
+        </div>
+
+        <button class="btn btn-green" type="submit">
+          Validate Book ID
+        </button>
+      </form>
+
+      <aside class="side-note">
+        <span class="side-note-icon">✓</span>
+        <h3>Book ID Validation</h3>
+        <p>
+          The system checks the Book ID format
+          and verifies it against the database.
+        </p>
+        <p>Invalid and oversized IDs are rejected.</p>
+      </aside>
+    </div>
+
+    <div id="validateResult" class="form-result"
+         aria-live="polite"></div>
+  </section>
+
+  <!-- BORROW BOOK -->
+  <section id="page-borrow" class="page">
+    <div class="page-title centered-title">
+      <span class="eyebrow">LIBRARY SERVICES</span>
+      <h1>Borrow a Book</h1>
+      <p>Borrow a book from the library catalogue.</p>
+    </div>
+
+    <div class="panel form-panel centered-panel">
+      <div class="notice">
+        Login and OTP verification are required before borrowing.
+        Authentication is not connected yet.
+      </div>
+
+      <form id="borrowForm">
+        <div class="field">
+          <label for="borrowId">Book ID</label>
+          <input id="borrowId" type="text" maxlength="200"
+                 required placeholder="Enter Book ID">
+        </div>
+
+        <button class="btn btn-green transaction-button"
+                type="submit" disabled>
+          Borrow Book
+        </button>
+      </form>
+    </div>
+
+    <div id="borrowResult" class="form-result centered-panel"
+         aria-live="polite"></div>
+  </section>
+
+  <!-- RETURN BOOK -->
+  <section id="page-return" class="page">
+    <div class="page-title centered-title">
+      <span class="eyebrow">LIBRARY SERVICES</span>
+      <h1>Return a Book</h1>
+      <p>Record a book return and check late fees.</p>
+    </div>
+
+    <div class="panel form-panel centered-panel">
+      <div class="notice">
+        Login and ownership verification are required before
+        returning books. Authentication is not connected yet.
+      </div>
+
+      <form id="returnForm">
+        <div class="field">
+          <label for="returnLoanId">Loan ID</label>
+          <input id="returnLoanId" type="number"
+                 min="1" step="1" required
+                 placeholder="Enter Loan ID">
+        </div>
+
+        <button class="btn btn-green transaction-button"
+                type="submit" disabled>
+          Return Book
+        </button>
+      </form>
+    </div>
+
+    <div id="returnResult" class="form-result centered-panel"
+         aria-live="polite"></div>
+  </section>
+
+  <!-- RECEIPT -->
+  <section id="page-receipt" class="page">
+    <div class="page-title centered-title">
+      <span class="eyebrow">TRANSACTION RECORD</span>
+      <h1>Latest Receipt</h1>
+      <p>View your most recent transaction in this session.</p>
+    </div>
+
+    <div id="receiptResult" class="panel receipt-panel centered-panel">
+      <div class="empty-state">
+        <span class="empty-icon">▤</span>
+        <p>No transaction receipt available yet.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOGIN -->
+  <section id="page-login" class="page">
+    <div class="auth-layout">
+      <div class="auth-aside">
+        <span class="eyebrow">ETERNITY LIBRARY</span>
+        <h2>Welcome<br><em>back.</em></h2>
+        <p>Sign in to manage your library account.</p>
+        <div class="auth-decoration" aria-hidden="true">✳</div>
+      </div>
+
+      <div class="panel auth-panel">
+        <h1>Welcome Back</h1>
+        <p class="auth-subtitle">
+          Sign in to your library account.
+        </p>
+
+        <div class="auth-tabs">
+          <button type="button" class="auth-tab active"
+                  aria-current="page">Login</button>
+          <button type="button" class="auth-tab"
+                  data-page="signup">Sign Up</button>
+        </div>
+
+
+        <form id="loginForm">
+          <div class="field">
+            <label for="loginEmail">Email Address</label>
+            <input id="loginEmail" type="email"
+                   maxlength="100" required
+                   autocomplete="username"
+                   placeholder="Enter your email">
+          </div>
+
+          <div class="field">
+            <label for="loginPassword">Password</label>
+            <input id="loginPassword" type="password"
+                   required autocomplete="current-password"
+                   placeholder="Enter your password">
+            <label class="visibility-control"><input type="checkbox" id="showLoginPassword"> Show password</label>
+          </div>
+
+          <button class="btn btn-green full-button" type="submit">
+            Login →
+          </button>
+        </form>
+
+        <div id="loginMessage" class="form-result"
+             role="status" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SIGN UP -->
+  <section id="page-signup" class="page">
+    <div class="panel auth-panel signup-panel">
+      <h1>Create Account</h1>
+      <p class="auth-subtitle">
+        Register for an Eternity Library account.
+      </p>
+
+      <div class="auth-tabs">
+        <button type="button" class="auth-tab"
+                data-page="login">Login</button>
+        <button type="button" class="auth-tab active"
+                aria-current="page">Sign Up</button>
+      </div>
+
+      <form id="signupForm">
+        <div class="field">
+          <label for="signupName">Full Name</label>
+          <input id="signupName" type="text"
+                 maxlength="100" required
+                 autocomplete="name"
+                 placeholder="Enter your full name">
+        </div>
+
+        <div class="field">
+          <label for="signupEmail">Email Address</label>
+          <input id="signupEmail" type="email"
+                 maxlength="100" required
+                 autocomplete="email"
+                 placeholder="Enter your email">
+        </div>
+
+        <div class="field">
+          <label for="signupPassword">Password</label>
+          <input id="signupPassword" type="password"
+                 minlength="12" maxlength="128"
+                 required autocomplete="new-password"
+                 placeholder="Create a password">
+          <small>Use at least 12 characters.</small>
+        </div>
+
+        <div class="field">
+          <label for="signupConfirm">Confirm Password</label>
+          <input id="signupConfirm" type="password"
+                 minlength="12" maxlength="128"
+                 required autocomplete="new-password"
+                 placeholder="Confirm your password">
+        </div>
+
+        <button class="btn btn-green full-button" type="submit">
+          Create Account
+        </button>
+      </form>
+
+      <div id="signupMessage" class="form-result"
+           role="status" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <!-- OTP VERIFICATION -->
+  <section id="page-otp" class="page">
+    <div class="panel auth-panel otp-panel">
+      <span class="otp-icon">✉</span>
+      <h1>Email Verification</h1>
+
+      <p class="auth-subtitle">
+        Enter the six-digit verification code
+        sent to your email.
+      </p>
+
+      <p id="otpHint" class="small-text">Verification codes expire after 5 minutes. Do not share your code.</p>
+      <form id="otpForm">
+        <div class="field">
+          <label for="otpCode">Verification Code</label>
+          <input id="otpCode" type="text"
+                 inputmode="numeric" maxlength="6"
+                 autocomplete="one-time-code"
+                 placeholder="000000" required>
+        </div>
+
+        <button class="btn btn-green full-button" type="submit">
+          Verify OTP
+        </button>
+      </form>
+
+      <button class="text-button" type="button" id="resendOtp">Resend OTP</button>
+      <div id="otpMessage" class="form-result"
+           role="status" aria-live="polite"></div>
+
+      <button class="text-button" type="button"
+              data-page="login">← Back to Login</button>
+    </div>
+  </section>
+
+  <!-- AUTHENTICATED ACCOUNT VIEW -->
+  <section id="page-account" class="page">
+    <div class="page-title centered-title">
+      <span class="eyebrow">ACCOUNT</span>
+      <h1>My Library Account</h1>
+      <p id="accountGreeting">Your account information</p>
+    </div>
+    <div class="panel centered-panel">
+      <div id="accountDetails" class="form-result"></div>
+      <p id="roleNotice" class="small-text"></p>
+      <button id="logoutBtn" class="btn btn-outline" type="button">Logout</button>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-wrap">
+    <span>© 2026 Eternity Library Management System</span>
+    <span id="apiStatus">Backend not checked</span>
+  </div>
+</footer>
+
+<div id="toast" class="toast" role="status"
+     aria-live="polite" hidden></div>
+
+</body>
+</html>
